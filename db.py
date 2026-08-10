@@ -45,3 +45,29 @@ def update_job_status(job_title, new_status):
 
     conn.commit()
     conn.close()
+
+def get_preference_summary():
+    conn = sqlite3.connect("jobs.db")
+    cursor = conn.cursor()
+
+    cursor.execute("SELECT job_title, employer_name FROM jobs WHERE status = 'applied'")
+    applied = cursor.fetchall()
+
+    cursor.execute("SELECT job_title, employer_name FROM jobs WHERE status = 'rejected'")
+    rejected = cursor.fetchall()
+
+    conn.close()
+
+    return {"applied": applied, "rejected": rejected}
+
+def get_preference_text():
+    prefs = get_preference_summary()
+
+    applied_titles = [f"{title} at {company}" for title, company in prefs["applied"]]
+    rejected_titles = [f"{title} at {company}" for title, company in prefs["rejected"]]
+
+    text = "User's past behavior:\n"
+    text += "Applied to: " + ", ".join(applied_titles) if applied_titles else "Applied to: none yet"
+    text += "\nRejected: " + ", ".join(rejected_titles) if rejected_titles else "\nRejected: none yet"
+
+    return text
