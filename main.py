@@ -1,5 +1,6 @@
 from graph import app
-from db import init_db, save_jobs
+from db import init_db, save_jobs, update_job_status
+
 
 init_db()
 
@@ -35,6 +36,7 @@ def update_status(tracked_jobs, job_title, new_status):
 
 
 updated_jobs = update_status(result["tracked_jobs"], "Software Engineer(Python)", "applied")
+update_job_status("Software Engineer(Python)", "applied")
 
 for job in updated_jobs:
     print(job["job_title"], "-", job["status"])
