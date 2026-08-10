@@ -1,4 +1,7 @@
 from graph import app
+from db import init_db, save_jobs
+
+init_db()
 
 result = app.invoke({
     "query": "python developer jobs in chicago",
@@ -17,6 +20,9 @@ for job in result["tracked_jobs"]:
     print("Reason:", job["reason"])
     print("Status:", job["status"])
     print("---")
+
+save_jobs(result["tracked_jobs"])
+print("Jobs saved to database.")
 
 
 def update_status(tracked_jobs, job_title, new_status):
