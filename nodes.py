@@ -48,19 +48,25 @@ def search_jobs_node(state: JobSearchState) -> JobSearchState:
     return {"jobs": jobs, "retry_count": retry_count + 1}
 
 
+from db import get_preference_text
+
 def score_jobs_node(state: JobSearchState) -> JobSearchState:
     scored_jobs = []
+    preference_text = get_preference_text()
 
     for job in state["jobs"][:3]:
         prompt = f"""
 Resume:
 {state['resume_text']}
 
+{preference_text}
+
 Job:
 Title: {job['job_title']}
 Company: {job['employer_name']}
 
 Give a match score from 1-10 and one short reason.
+Consider the user's past applied/rejected pattern above when scoring, not just resume fit.
 Reply with ONLY valid JSON, exactly in this format, nothing else:
 {{"score": 7, "reason": "short sentence here"}}
 """
@@ -81,7 +87,6 @@ Reply with ONLY valid JSON, exactly in this format, nothing else:
         scored_jobs.append(job_with_score)
 
     return {"scored_jobs": scored_jobs}
-
 
 def should_retry(state: JobSearchState) -> str:
     scores = [job["score"] for job in state["scored_jobs"] if job["score"] is not None]

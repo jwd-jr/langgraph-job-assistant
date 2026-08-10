@@ -4,16 +4,23 @@ from db import init_db, save_jobs, update_job_status
 
 init_db()
 
-result = app.invoke({
+initial_state = {
     "query": "python developer jobs in chicago",
     "jobs": [],
     "resume_text": "",
     "scored_jobs": [],
     "retry_count": 0,
     "tracked_jobs": []
-})
+}
 
-print("Retries used:", result["retry_count"])
+result = None
+
+for update in app.stream(initial_state):
+    for node_name, node_output in update.items():
+        print(f"[Progress] {node_name} finished.")
+        result = node_output
+
+print("\nFinal results:\n")
 
 for job in result["tracked_jobs"]:
     print(job["job_title"], "-", job["employer_name"])
