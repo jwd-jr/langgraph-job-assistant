@@ -1,0 +1,57 @@
+import { useState } from 'react'
+import './App.css'
+
+function App() {
+  const [jobs, setJobs] = useState([])
+  const [loading, setLoading] = useState(false)
+
+  const fetchJobs = async () => {
+    setLoading(true)
+    const response = await fetch("http://localhost:8000/search-jobs")
+    const data = await response.json()
+    setJobs(data.tracked_jobs)
+    setLoading(false)
+  }
+
+  const scoreColor = (score) => {
+    if (score >= 7) return "score-high"
+    if (score >= 4) return "score-mid"
+    return "score-low"
+  }
+
+  return (
+    <div className="container">
+      <h1>Job Assistant</h1>
+      <button className="search-btn" onClick={fetchJobs}>
+        {loading ? "Searching..." : "Search Jobs"}
+      </button>
+
+      {jobs.length > 0 && (
+        <table>
+          <thead>
+            <tr>
+              <th>Job Title</th>
+              <th>Company</th>
+              <th>Score</th>
+              <th>Reason</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            {jobs.map((job) => (
+              <tr key={job.job_id}>
+                <td>{job.job_title}</td>
+                <td>{job.employer_name}</td>
+                <td className={scoreColor(job.score)}>{job.score}</td>
+                <td>{job.reason}</td>
+                <td>{job.status}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      )}
+    </div>
+  )
+}
+
+export default App

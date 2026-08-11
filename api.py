@@ -1,10 +1,21 @@
 from fastapi import FastAPI
 from db import update_job_status
 from db import save_jobs
+from fastapi.middleware.cors import CORSMiddleware
 
 from graph import app as langgraph_app
 
 app = FastAPI()
+
+from fastapi.middleware.cors import CORSMiddleware
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:5173"],
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 
 @app.get("/search-jobs")
 @app.get("/search-jobs")
