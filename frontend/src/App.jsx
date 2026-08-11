@@ -13,6 +13,18 @@ function App() {
     setLoading(false)
   }
 
+  const updateStatus = async (jobId, newStatus) => {
+    await fetch(`http://localhost:8000/update-status?job_id=${jobId}&new_status=${newStatus}`, {
+      method: "POST"
+    })
+
+    setJobs((prevJobs) =>
+      prevJobs.map((job) =>
+        job.job_id === jobId ? { ...job, status: newStatus } : job
+      )
+    )
+  }
+
   const scoreColor = (score) => {
     if (score >= 7) return "score-high"
     if (score >= 4) return "score-mid"
@@ -35,6 +47,7 @@ function App() {
               <th>Score</th>
               <th>Reason</th>
               <th>Status</th>
+              <th>Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -45,6 +58,10 @@ function App() {
                 <td className={scoreColor(job.score)}>{job.score}</td>
                 <td>{job.reason}</td>
                 <td>{job.status}</td>
+                <td>
+                  <button onClick={() => updateStatus(job.job_id, "applied")}>Apply</button>
+                  <button onClick={() => updateStatus(job.job_id, "rejected")}>Reject</button>
+                </td>
               </tr>
             ))}
           </tbody>
