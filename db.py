@@ -33,15 +33,15 @@ def save_jobs(tracked_jobs):
     conn.commit()
     conn.close()
 
-def update_job_status(job_title, new_status):
+def update_job_status(job_id, new_status):
     conn = sqlite3.connect("jobs.db")
     cursor = conn.cursor()
 
     cursor.execute("""
         UPDATE jobs
         SET status = ?
-        WHERE job_title = ?
-    """, (new_status, job_title))
+        WHERE job_id = ?
+    """, (new_status, job_id))
 
     conn.commit()
     conn.close()
