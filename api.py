@@ -2,6 +2,9 @@ from fastapi import FastAPI
 from db import update_job_status
 from db import save_jobs
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi import UploadFile, File
+from resume_reader import extract_resume_text
+import shutil
 
 from graph import app as langgraph_app
 
@@ -39,3 +42,20 @@ def search_jobs():
 def update_status_endpoint(job_id: str, new_status: str):
     update_job_status(job_id, new_status)
     return {"message": "Status updated", "job_id": job_id, "new_status": new_status}
+
+
+
+
+@app.post("/upload-resume")
+async def upload_resume(file: UploadFile = File(...)):
+    file_path = f"uploaded_{file.filename}"
+
+    with open(file_path, "wb") as buffer:
+        shutil.copyfileobj(file.file, buffer)
+
+    resume_text = extract_resume_text(file_path)
+
+    with open("current_resume.txt", "w", encoding="utf-8") as f:
+        f.write(resume_text)
+
+    return {"message": "Resume uploaded successfully", "preview": resume_text[:200]}

@@ -13,6 +13,20 @@ function App() {
     setLoading(false)
   }
 
+  const uploadResume = async (event) => {
+    const file = event.target.files[0]
+    const formData = new FormData()
+    formData.append("file", file)
+
+    const response = await fetch("http://localhost:8000/upload-resume", {
+      method: "POST",
+      body: formData
+    })
+
+    const data = await response.json()
+    alert(data.message)
+  }
+
   const updateStatus = async (jobId, newStatus) => {
     await fetch(`http://localhost:8000/update-status?job_id=${jobId}&new_status=${newStatus}`, {
       method: "POST"
@@ -34,6 +48,9 @@ function App() {
   return (
     <div className="container">
       <h1>Job Assistant</h1>
+
+      <input type="file" onChange={uploadResume} accept=".pdf,.docx,.txt" />
+
       <button className="search-btn" onClick={fetchJobs}>
         {loading ? "Searching..." : "Search Jobs"}
       </button>

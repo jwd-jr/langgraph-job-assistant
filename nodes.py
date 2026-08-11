@@ -105,3 +105,15 @@ def track_jobs_node(state: JobSearchState) -> JobSearchState:
         tracked_jobs.append(job_with_status)
 
     return {"tracked_jobs": tracked_jobs}
+
+
+
+
+def load_resume_node(state: JobSearchState) -> JobSearchState:
+    if os.path.exists("current_resume.txt"):
+        with open("current_resume.txt", "r", encoding="utf-8") as f:
+            resume_text = f.read()
+    else:
+        resume_text = DUMMY_RESUME
+
+    return {"resume_text": resume_text}
