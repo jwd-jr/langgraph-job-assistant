@@ -1,64 +1,56 @@
 Muhammad Jawad ur Rahman 
 AI Engineer & Backend Developer 
-+92 327 9977775   |   jawdjr@gmail.com   |   Taxila, Pakistan   |   github.com/jwd-jr   |   linkedin.com/in/m-jawad-ur-rahman-3243b6306 
++92 327 9977775 |  jawdjr@gmail.com  |  Taxila, Pakistan  |  github.com/jwd-jr  |  linkedin.com/in/m-jawad-ur-rahman-3243b6306 
 ABOUT 
-Motivated AI Engineer & Backend Developer with hands-on experience in Python, Machine Learning, LangChain, and 
-FastAPI, seeking a Junior AI Engineer / Backend Developer role. I build real-world AI tools that automate analysis, generate 
-insights, and enhance learning — with strong API integration skills, experience designing database schemas and working 
-with SQL databases, and clear communication skills for collaborating across technical and non-technical teams. Known for 
-ability to learn quickly and contribute to impactful projects. 
+AI Engineer and Backend Developer with hands-on experience building production AI systems — including LLM integration, 
+RAG pipelines, LangGraph-based automation, and backend APIs using Python and FastAPI. Currently working as an AI 
+Engineer at Saturn7 Solutions, building real-world AI automation systems. I build practical AI tools that automate workflows, 
+generate insights, and solve real problems for real users. 
 EDUCATION 
-Bachelor in Artificial Intelligence, Pak Austria Fachhochschule (PAF-IAST) Haripur, KPK | Feb 2024 – Present 
-Field: Information and Communication Technologies • EQF Level 5 
+Bachelor in Artificial Intelligence, Pak Austria Fachhochschule (PAF-IAST) Haripur, KPK | 3rd Year 
 SKILLS 
-Languages & Frameworks:  
-Python   •   FastAPI   •   Django   •   SQLAlchemy   •   REST APIs   •   API Integration   •   SQL Databases   •   Database 
-Schemas 
-AI / ML:  
-Machine Learning   •   Deep Learning   •   NLP   •   Sentiment Analysis   •   LangChain   •   RAG Systems   •   Prompt 
-Engineering   •   Hugging Face   •   Anthropic / Claude API   •   MCP   •   LLM Integration 
-Tools & Infra:  
-Docker   •   Git & GitHub   •   CI/CD   •   Vector Databases   •   Communication Skills 
+Languages & Frameworks: Python, FastAPI, Django, SQLAlchemy, REST APIs, SQL Databases 
+AI/ML: Machine Learning, NLP, LangChain, LangGraph, RAG Systems, Prompt Engineering, Hugging Face, 
+Claude/Anthropic API, MCP, LLM Integration 
+Tools: Docker, Git & GitHub, Vector Databases 
 PROFESSIONAL EXPERIENCE 
-Backend Developer | Hoop Interactive Wyoming, USA (Remote) | Apr 2026 – Present 
-● Built and maintained backend REST APIs using Python and FastAPI for production-level applications, supporting 
-API integration across multiple product features 
-● Managed SQL databases using SQLAlchemy with clean, normalized schema design 
-● Integrated AI models into web applications, extending product capabilities without added latency 
-● Containerized services with Docker and supported CI/CD workflows to streamline deployment 
-● Collaborated cross-functionally on testing, debugging, and new feature development, communicating progress 
-clearly with the team 
-AI Engineer | Ctrl Alt Crew Islamabad, Pakistan | Oct 2025 – Mar 2026 
-● Developed and optimized ML models using TensorFlow, Scikit-learn, and PyTorch, evaluating multiple model 
-variants to select the best-performing approach based on validation accuracy 
-● Conducted EDA and prepared real-world datasets for model training across several projects, standardizing 
-preprocessing steps to reduce turnaround time 
-● Built and integrated RAG systems using LangChain for enhanced AI responses 
-● Developed NLP pipelines for text processing, analysis, and language understanding 
-● Assisted in deploying models to test environments, writing technical documentation, and communicating results to 
-the team 
+AI Engineer (Contract, Flexible) | Saturn7 Solutions                   Taxila, Pakistan (Onsite) | July 2026 – Present 
+• Designed and deployed a production RAG system using LangChain and ChromaDB (top -k=3 retrieval) for a small 
+business website, handling customer queries, complaints, and policy/terms questions automatically  
+• Built a booking system integrated into the same client website 
+• Built and deployed a Facebook automation bot using Selenium, capable of auto -posting content and managing account 
+activity, hosted on a VPS 
+Repos:  https://github.com/jwd-jr/lollypop-lane-chatbot https://github.com/jwd-jr/lollypop-lane-booking 
+Backend Developer Intern | Hoop Interactive                          Wyoming, USA (Remote) | Mar 2026 – June 2026 
+• Built REST APIs using FastAPI for a full-stack Tax Filing System, handling tax record submission, data storage, and 
+transaction tracking 
+• Designed a normalized relational database schema based on ERD and class diagram planning  
+• Containerized the backend using Docker and set up scheduled cron jobs to automate recurring tasks  
+• Collaborated cross-functionally on testing, debugging, and feature development 
 PROJECTS 
-AI-Powered Data Analysis & Visualization Tool | Python • LangChain • FastAPI • Plotly 
-● Built an end-to-end automated data analysis pipeline from a single dataset upload, cutting manual analysis time 
-significantly for exploratory tasks 
-● Implemented data cleaning, outlier detection, and interactive visualizations (histograms, scatter plots, correlations) 
-● Integrated LLMs to automatically summarize patterns, trends, and key insights 
-AI-Based Self-Study & Auto-Quiz Generator | LangChain • FastAPI • PDF Parsing 
-● Converted lecture slides into structured learning material with auto-generated quizzes, reducing manual study-prep 
-time ● Built a FastAPI backend for file uploads, content processing, and API handling 
-● Used embeddings and prompt chaining to produce accurate educational output 
-YouTube Comment Analyzer — Live Chrome Extension | FastAPI • Scikit-learn • K-Means • Groq AI • Railway 
-● Built and deployed a full-stack ML app: backend live on Railway, frontend as a working Chrome Extension 
-● Sentiment analysis on up to 1,000 YouTube comments using 5 trained ML models (Logistic Regression, Naive 
-Bayes, Random Forest, SVM, AdaBoost); best model served via FastAPI 
-● Opinion clustering with K-Means + TF-IDF to surface top 3 majority opinions, auto-labeled via Groq AI with 
-percentage breakdown 
-● Results displayed as an interactive donut chart in the Chrome Extension popup using Chart.js 
-Tax Filing System — Full Stack Project | Python • FastAPI • SQL • SQLAlchemy • ERD • UML 
-● Built a complete tax filing system from scratch, covering the full development lifecycle from system design to 
-implementation 
-● Designed class diagrams and ERDs before coding, then implemented a fully normalized relational database 
-● Developed REST APIs using FastAPI to handle tax records, user data, and file management operations 
-● Implemented core features including tax record submission, data storage, and transaction tracking 
+Job Search & Application Assistant | LangGraph • SQLite • Tavily API                
+• Built an agentic job search system using LangGraph that takes a resume and 
+location, searches for matching roles, and automatically broadens the search query if fewer than 5 relevant results  
+• Designed modular subgraphs for resume understanding, job search, and scoring/tracking, with structured state 
+management across the pipeline 
+• Built a working frontend where users review matched jobs, apply directly, and log outcomes (accepted/rejected) with 
+persistent tracking via SQLite 
+• Built a feedback loop that analyzes rejection patterns over time and suggests specific improvements to the user's 
+resume or approach for future applications 
+Shilajit Store — E-commerce Website | Django • Python • SQLite/ORM 
+• Built a full e-commerce website from scratch using Django, including product catalog, 
+batch/lab-test verification, and Cash on Delivery ordering 
+• Designed the database schema with Product, Batch, and Order models for customer trust and traceability  
+• Built a custom Django admin panel for managing products, batches, and order status  
+• Implemented a lightweight RAG-based Q&A system for product, shipping, and policy questions 
+• (Deployment pending — not yet live) 
+YouTube Comment Analyzer — Live Extension | FastAPI • Scikit-learn • K-Means  
+• Built and deployed a full-stack ML app: backend live on Railway, frontend as a working Chrome Extension  
+• Sentiment analysis on up to 1,000 YouTube comments using 5 trained ML models; best model served via FastAPI  
+• Opinion clustering with K-Means + TF-IDF with percentage breakdown, shown as an interactive chart 
 LANGUAGES 
-Chitrali (Native)   •   Urdu (Native / C2)   •   English (Proficient / B2–C2) 
+Chitrali (Native)  •  Urdu (Native / C2)  •  English (Proficient / B2–C2) 
+https://github.com/jwd-jr/langgraph-job-assistant 
+https://github.com/jwd-jr/Startup 
+https://github.com/jwd-
+jr/youtube-comment-analyser 

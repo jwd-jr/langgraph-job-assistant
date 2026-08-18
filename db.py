@@ -1,11 +1,18 @@
 import sqlite3
+import hashlib
+
+def make_unique_key(job_title, employer_name):
+    combined = f"{job_title.lower().strip()}_{employer_name.lower().strip()}"
+    return hashlib.md5(combined.encode()).hexdigest()
+
 
 def init_db():
     conn = sqlite3.connect("jobs.db")
     cursor = conn.cursor()
     cursor.execute("""
         CREATE TABLE IF NOT EXISTS jobs (
-            job_id TEXT PRIMARY KEY,
+            unique_key TEXT PRIMARY KEY,
+            job_id TEXT,
             job_title TEXT,
             employer_name TEXT,
             score INTEGER,
@@ -21,27 +28,32 @@ def save_jobs(tracked_jobs):
     cursor = conn.cursor()
 
     for job in tracked_jobs:
+        unique_key = make_unique_key(job["job_title"], job["employer_name"])
+
         cursor.execute("""
-            INSERT INTO jobs (job_id, job_title, employer_name, score, reason, status)
-            VALUES (?, ?, ?, ?, ?, ?)
-            ON CONFLICT(job_id) DO UPDATE SET
+            INSERT INTO jobs (unique_key, job_id, job_title, employer_name, score, reason, status)
+            VALUES (?, ?, ?, ?, ?, ?, ?)
+            ON CONFLICT(unique_key) DO UPDATE SET
+                job_id = excluded.job_id,
                 score = excluded.score,
                 reason = excluded.reason,
                 status = excluded.status
-        """, (job["job_id"], job["job_title"], job["employer_name"], job["score"], job["reason"], job["status"]))
+        """, (unique_key, job["job_id"], job["job_title"], job["employer_name"], job["score"], job["reason"], job["status"]))
 
     conn.commit()
     conn.close()
 
-def update_job_status(job_id, new_status):
+def update_job_status(job_title, employer_name, new_status):
     conn = sqlite3.connect("jobs.db")
     cursor = conn.cursor()
+
+    unique_key = make_unique_key(job_title, employer_name)
 
     cursor.execute("""
         UPDATE jobs
         SET status = ?
-        WHERE job_id = ?
-    """, (new_status, job_id))
+        WHERE unique_key = ?
+    """, (new_status, unique_key))
 
     conn.commit()
     conn.close()

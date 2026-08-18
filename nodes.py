@@ -4,12 +4,15 @@ import json
 from dotenv import load_dotenv
 from groq import Groq
 from state import JobSearchState
+from model_picker import get_available_model
+
+
 
 load_dotenv()
 
 client = Groq(api_key=os.environ.get("GROQ_API_KEY"))
 RAPIDAPI_KEY = os.environ.get("RAPIDAPI_KEY")
-
+CHOSEN_MODEL = get_available_model()
 DUMMY_RESUME = """
 Name: Alex Kim
 Title: Junior Python Developer
@@ -71,7 +74,7 @@ Reply with ONLY valid JSON, exactly in this format, nothing else:
 {{"score": 7, "reason": "short sentence here"}}
 """
         response = client.chat.completions.create(
-            model="llama-3.1-8b-instant",
+            model=CHOSEN_MODEL,
             messages=[{"role": "user", "content": prompt}]
         )
         result_text = response.choices[0].message.content

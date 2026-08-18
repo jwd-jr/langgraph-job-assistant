@@ -27,14 +27,16 @@ function App() {
     alert(data.message)
   }
 
-  const updateStatus = async (jobId, newStatus) => {
-    await fetch(`http://localhost:8000/update-status?job_id=${jobId}&new_status=${newStatus}`, {
+  const updateStatus = async (jobTitle, employerName, newStatus) => {
+    await fetch(`http://localhost:8000/update-status?job_title=${encodeURIComponent(jobTitle)}&employer_name=${encodeURIComponent(employerName)}&new_status=${newStatus}`, {
       method: "POST"
     })
 
     setJobs((prevJobs) =>
       prevJobs.map((job) =>
-        job.job_id === jobId ? { ...job, status: newStatus } : job
+        job.job_title === jobTitle && job.employer_name === employerName
+          ? { ...job, status: newStatus }
+          : job
       )
     )
   }
@@ -76,8 +78,8 @@ function App() {
                 <td>{job.reason}</td>
                 <td>{job.status}</td>
                 <td>
-                  <button onClick={() => updateStatus(job.job_id, "applied")}>Apply</button>
-                  <button onClick={() => updateStatus(job.job_id, "rejected")}>Reject</button>
+                  <button onClick={() => updateStatus(job.job_title, job.employer_name, "applied")}>Apply</button>
+                  <button onClick={() => updateStatus(job.job_title, job.employer_name, "rejected")}>Reject</button>
                 </td>
               </tr>
             ))}

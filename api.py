@@ -5,7 +5,9 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi import UploadFile, File
 from resume_reader import extract_resume_text
 import shutil
+from db import init_db, save_jobs, update_job_status
 
+init_db()
 from graph import app as langgraph_app
 
 app = FastAPI()
@@ -39,9 +41,9 @@ def search_jobs():
 
 
 @app.post("/update-status")
-def update_status_endpoint(job_id: str, new_status: str):
-    update_job_status(job_id, new_status)
-    return {"message": "Status updated", "job_id": job_id, "new_status": new_status}
+def update_status_endpoint(job_title: str, employer_name: str, new_status: str):
+    update_job_status(job_title, employer_name, new_status)
+    return {"message": "Status updated", "job_title": job_title, "new_status": new_status}
 
 
 
@@ -59,3 +61,8 @@ async def upload_resume(file: UploadFile = File(...)):
         f.write(resume_text)
 
     return {"message": "Resume uploaded successfully", "preview": resume_text[:200]}
+
+@app.post("/update-status")
+def update_status_endpoint(job_title: str, employer_name: str, new_status: str):
+    update_job_status(job_title, employer_name, new_status)
+    return {"message": "Status updated", "job_title": job_title, "new_status": new_status}
