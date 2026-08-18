@@ -129,3 +129,78 @@ td button:last-child {
 td button:hover {
   opacity: 0.85;
 }
+
+.empty-state {
+  color: #888;
+  font-size: 16px;
+  margin-top: 20px;
+}
+
+.stats-bar {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  margin-bottom: 30px;
+  padding: 20px;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
+}
+
+.stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.stat-number {
+  font-size: 28px;
+  font-weight: 700;
+  color: #1a1a2e;
+}
+
+.stat-applied {
+  color: #1e8e3e;
+}
+
+.stat-rejected {
+  color: #d93025;
+}
+
+.stat-label {
+  font-size: 13px;
+  color: #888;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-top: 4px;
+}
+
+.badge {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+.badge-applied {
+  background-color: #e3f5e8;
+  color: #1e8e3e;
+}
+
+.badge-rejected {
+  background-color: #fce8e6;
+  color: #d93025;
+}
+
+.badge-pending {
+  background-color: #f0f0f0;
+  color: #666;
+}
+
+.apply-btn, .reject-btn {
+  display: block;
+  width: 100%;
+  margin-bottom: 6px;
+}
