@@ -63,6 +63,8 @@ function App() {
             <tr>
               <th>Job Title</th>
               <th>Company</th>
+              <th>Location</th>
+              <th>Posted</th>
               <th>Score</th>
               <th>Reason</th>
               <th>Status</th>
@@ -74,6 +76,8 @@ function App() {
               <tr key={job.job_id}>
                 <td>{job.job_title}</td>
                 <td>{job.employer_name}</td>
+                <td>{job.job_location || "N/A"}</td>
+                <td>{job.job_posted_at || "N/A"}</td>
                 <td className={scoreColor(job.score)}>{job.score}</td>
                 <td>{job.reason}</td>
                 <td>{job.status}</td>

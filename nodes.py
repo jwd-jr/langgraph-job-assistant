@@ -68,10 +68,10 @@ Job:
 Title: {job['job_title']}
 Company: {job['employer_name']}
 
-Give a match score from 1-10 and one short reason.
+Give a match score from 1-10 and a reason in 15-20 words, as EXACTLY 2 complete sentences. Do not cut off mid-sentence.
 Consider the user's past applied/rejected pattern above when scoring, not just resume fit.
-Reply with ONLY valid JSON, exactly in this format, nothing else:
-{{"score": 7, "reason": "short sentence here"}}
+Reply with ONLY valid JSON, exactly in this format, nothing else. Do not add any text before or after the JSON:
+{{"score": 7, "reason": "Complete sentence here. Another complete sentence here."}}
 """
         response = client.chat.completions.create(
             model=CHOSEN_MODEL,

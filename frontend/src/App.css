@@ -1,56 +1,131 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background-color: #f7f8fa;
+}
+
 .container {
-  max-width: 900px;
-  margin: 40px auto;
-  font-family: Arial, sans-serif;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 40px 20px;
+  font-family: 'Segoe UI', Arial, sans-serif;
   text-align: center;
 }
 
 h1 {
-  color: #2c3e50;
+  color: #1a1a2e;
+  font-size: 32px;
+  margin-bottom: 24px;
+}
+
+input[type="file"] {
+  display: block;
+  margin: 0 auto 20px auto;
+  padding: 8px;
+  border: 1px solid #d0d5dd;
+  border-radius: 6px;
+  background-color: white;
 }
 
 .search-btn {
   background-color: #2c7be5;
   color: white;
   border: none;
-  padding: 10px 20px;
-  border-radius: 6px;
+  padding: 12px 28px;
+  border-radius: 8px;
   font-size: 16px;
+  font-weight: 600;
   cursor: pointer;
   margin-bottom: 30px;
+  transition: background-color 0.2s ease;
 }
 
 .search-btn:hover {
   background-color: #1a5fc4;
 }
 
+.search-btn:disabled {
+  background-color: #a0b8dd;
+  cursor: not-allowed;
+}
+
 table {
   width: 100%;
   border-collapse: collapse;
+  background-color: white;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
   text-align: left;
 }
 
-th, td {
-  padding: 12px;
-  border-bottom: 1px solid #e0e0e0;
+th {
+  background-color: #1a1a2e;
+  color: white;
+  padding: 14px 16px;
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
-th {
-  background-color: #f4f6f8;
+td {
+  padding: 16px;
+  border-bottom: 1px solid #eef0f3;
+  font-size: 15px;
   color: #333;
+  vertical-align: top;
+}
+
+tbody tr:hover {
+  background-color: #f4f7fb;
+}
+
+tbody tr:last-child td {
+  border-bottom: none;
 }
 
 .score-high {
   color: #1e8e3e;
-  font-weight: bold;
+  font-weight: 700;
+  font-size: 17px;
 }
 
 .score-mid {
   color: #e8a300;
-  font-weight: bold;
+  font-weight: 700;
+  font-size: 17px;
 }
 
 .score-low {
   color: #d93025;
-  font-weight: bold;
+  font-weight: 700;
+  font-size: 17px;
+}
+
+td button {
+  padding: 6px 14px;
+  margin: 2px;
+  border: none;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+}
+
+td button:first-child {
+  background-color: #1e8e3e;
+  color: white;
+}
+
+td button:last-child {
+  background-color: #d93025;
+  color: white;
+}
+
+td button:hover {
+  opacity: 0.85;
 }
