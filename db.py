@@ -14,18 +14,21 @@ def init_db():
     conn = sqlite3.connect("jobs.db")
     cursor = conn.cursor()
     cursor.execute("""
-        CREATE TABLE IF NOT EXISTS jobs (
-            unique_key TEXT PRIMARY KEY,
-            job_id TEXT,
-            job_title TEXT,
-            employer_name TEXT,
-            job_location TEXT,
-            job_posted_at TEXT,
-            score INTEGER,
-            reason TEXT,
-            status TEXT
-        )
-    """)
+    CREATE TABLE IF NOT EXISTS jobs (
+        unique_key TEXT,
+        user_id INTEGER NOT NULL,
+        job_id TEXT,
+        job_title TEXT,
+        employer_name TEXT,
+        job_location TEXT,
+        job_posted_at TEXT,
+        score INTEGER,
+        reason TEXT,
+        status TEXT,
+        PRIMARY KEY (unique_key, user_id),
+        FOREIGN KEY (user_id) REFERENCES users(id)
+    )
+""")
     cursor.execute("""
         CREATE TABLE IF NOT EXISTS users (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -79,7 +82,7 @@ def get_user_by_email(email):
         "hashed_password": row[2]
     }
 
-def save_jobs(tracked_jobs):
+def save_jobs(tracked_jobs, user_id):
     conn = sqlite3.connect("jobs.db")
     cursor = conn.cursor()
 
@@ -87,22 +90,22 @@ def save_jobs(tracked_jobs):
         unique_key = make_unique_key(job["job_title"], job["employer_name"])
 
         cursor.execute("""
-            INSERT INTO jobs (unique_key, job_id, job_title, employer_name, job_location, job_posted_at, score, reason, status)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
-            ON CONFLICT(unique_key) DO UPDATE SET
+            INSERT INTO jobs (unique_key, user_id, job_id, job_title, employer_name, job_location, job_posted_at, score, reason, status)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            ON CONFLICT(unique_key, user_id) DO UPDATE SET
                 job_id = excluded.job_id,
                 job_location = excluded.job_location,
                 job_posted_at = excluded.job_posted_at,
                 score = excluded.score,
                 reason = excluded.reason,
                 status = excluded.status
-        """, (unique_key, job["job_id"], job["job_title"], job["employer_name"], job.get("job_location"), job.get("job_posted_at"), job["score"], job["reason"], job["status"]))
+        """, (unique_key, user_id, job["job_id"], job["job_title"], job["employer_name"], job.get("job_location"), job.get("job_posted_at"), job["score"], job["reason"], job["status"]))
 
     conn.commit()
     conn.close()
 
 
-def update_job_status(job_title, employer_name, new_status):
+def update_job_status(job_title, employer_name, new_status, user_id):
     conn = sqlite3.connect("jobs.db")
     cursor = conn.cursor()
 
@@ -111,12 +114,11 @@ def update_job_status(job_title, employer_name, new_status):
     cursor.execute("""
         UPDATE jobs
         SET status = ?
-        WHERE unique_key = ?
-    """, (new_status, unique_key))
+        WHERE unique_key = ? AND user_id = ?
+    """, (new_status, unique_key, user_id))
 
     conn.commit()
     conn.close()
-
 
 def get_preference_summary():
     conn = sqlite3.connect("jobs.db")
@@ -144,3 +146,16 @@ def get_preference_text():
     text += "\nRejected: " + ", ".join(rejected_titles) if rejected_titles else "\nRejected: none yet"
 
     return text
+
+def get_jobs_for_user(user_id):
+    conn = sqlite3.connect("jobs.db")
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        SELECT unique_key, job_id, job_title, employer_name, job_location, job_posted_at, score, reason, status
+        FROM jobs WHERE user_id = ?
+    """, (user_id,))
+    rows = cursor.fetchall()
+
+    conn.close()
+    return rows

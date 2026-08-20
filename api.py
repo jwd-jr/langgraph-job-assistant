@@ -7,7 +7,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from pydantic import BaseModel
 
-from db import create_user, update_job_status, get_user_by_email, save_jobs, init_db, pwd_context
+from db import create_user, update_job_status, get_user_by_email, save_jobs, init_db, pwd_context, get_jobs_for_user
 from resume_reader import extract_resume_text
 from dotenv import load_dotenv
 load_dotenv()
@@ -65,14 +65,13 @@ def search_jobs(current_user: dict = Depends(get_current_user)):
     }
 
     result = langgraph_app.invoke(initial_state)
-    save_jobs(result["tracked_jobs"])
+    save_jobs(result["tracked_jobs"], current_user["user_id"])
 
     return {"tracked_jobs": result["tracked_jobs"]}
 
-
 @app.post("/update-status")
-def update_status_endpoint(job_title: str, employer_name: str, new_status: str):
-    update_job_status(job_title, employer_name, new_status)
+def update_status_endpoint(job_title: str, employer_name: str, new_status: str, current_user: dict = Depends(get_current_user)):
+    update_job_status(job_title, employer_name, new_status, current_user["user_id"])
     return {"message": "Status updated", "job_title": job_title, "new_status": new_status}
 
 
