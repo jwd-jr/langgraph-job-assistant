@@ -1,9 +1,10 @@
 import os
 import shutil
 from datetime import datetime, timedelta
-from jose import jwt
-from fastapi import FastAPI, UploadFile, File
+from jose import jwt, JWTError
+from fastapi import FastAPI, UploadFile, File,Depends, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from pydantic import BaseModel
 
 from db import create_user, update_job_status, get_user_by_email, save_jobs, init_db, pwd_context
@@ -26,6 +27,21 @@ from graph import app as langgraph_app
 JWT_SECRET = os.getenv("JWT_SECRET")
 JWT_ALGORITHM = "HS256"
 
+security = HTTPBearer()
+
+def get_current_user(credentials: HTTPAuthorizationCredentials = Depends(security)):
+    token = credentials.credentials
+
+    try:
+        payload = jwt.decode(token, JWT_SECRET, algorithms=[JWT_ALGORITHM])
+    except JWTError:
+        raise HTTPException(status_code=401, detail="Invalid or expired token")
+
+    return {
+        "user_id": payload["user_id"],
+        "email": payload["email"]
+    }
+
 
 class SignupRequest(BaseModel):
     email: str
@@ -38,7 +54,7 @@ class LoginRequest(BaseModel):
 
 
 @app.get("/search-jobs")
-def search_jobs():
+def search_jobs(current_user: dict = Depends(get_current_user)):
     initial_state = {
         "query": "python developer jobs in chicago",
         "jobs": [],
