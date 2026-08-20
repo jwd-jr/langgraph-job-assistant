@@ -1,18 +1,17 @@
-from fastapi import FastAPI
-from db import update_job_status
-from db import save_jobs
-from fastapi.middleware.cors import CORSMiddleware
-from fastapi import UploadFile, File
-from resume_reader import extract_resume_text
+import os
 import shutil
-from db import init_db, save_jobs, update_job_status
+from datetime import datetime, timedelta
+from jose import jwt
+from fastapi import FastAPI, UploadFile, File
+from fastapi.middleware.cors import CORSMiddleware
+from pydantic import BaseModel
 
-init_db()
-from graph import app as langgraph_app
+from db import create_user, update_job_status, get_user_by_email, save_jobs, init_db, pwd_context
+from resume_reader import extract_resume_text
+from dotenv import load_dotenv
+load_dotenv()
 
 app = FastAPI()
-
-from fastapi.middleware.cors import CORSMiddleware
 
 app.add_middleware(
     CORSMiddleware,
@@ -21,8 +20,23 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+init_db()
+from graph import app as langgraph_app
 
-@app.get("/search-jobs")
+JWT_SECRET = os.getenv("JWT_SECRET")
+JWT_ALGORITHM = "HS256"
+
+
+class SignupRequest(BaseModel):
+    email: str
+    password: str
+
+
+class LoginRequest(BaseModel):
+    email: str
+    password: str
+
+
 @app.get("/search-jobs")
 def search_jobs():
     initial_state = {
@@ -46,8 +60,6 @@ def update_status_endpoint(job_title: str, employer_name: str, new_status: str):
     return {"message": "Status updated", "job_title": job_title, "new_status": new_status}
 
 
-
-
 @app.post("/upload-resume")
 async def upload_resume(file: UploadFile = File(...)):
     file_path = f"uploaded_{file.filename}"
@@ -62,7 +74,32 @@ async def upload_resume(file: UploadFile = File(...)):
 
     return {"message": "Resume uploaded successfully", "preview": resume_text[:200]}
 
-@app.post("/update-status")
-def update_status_endpoint(job_title: str, employer_name: str, new_status: str):
-    update_job_status(job_title, employer_name, new_status)
-    return {"message": "Status updated", "job_title": job_title, "new_status": new_status}
+
+@app.post("/signup")
+def signup(request: SignupRequest):
+    success = create_user(request.email, request.password)
+
+    if not success:
+        return {"error": "Email already registered"}
+
+    return {"message": "Signup successful"}
+
+
+@app.post("/login")
+def login(request: LoginRequest):
+    user = get_user_by_email(request.email)
+
+    if user is None:
+        return {"error": "Invalid email or password"}
+
+    if not pwd_context.verify(request.password, user["hashed_password"]):
+        return {"error": "Invalid email or password"}
+
+    payload = {
+        "user_id": user["id"],
+        "email": user["email"],
+        "exp": datetime.utcnow() + timedelta(days=7)
+    }
+    token = jwt.encode(payload, JWT_SECRET, algorithm=JWT_ALGORITHM)
+
+    return {"access_token": token}

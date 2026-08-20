@@ -1,5 +1,9 @@
 import sqlite3
 import hashlib
+from datetime import datetime
+from passlib.context import CryptContext
+
+pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 def make_unique_key(job_title, employer_name):
     combined = f"{job_title.lower().strip()}_{employer_name.lower().strip()}"
@@ -22,9 +26,58 @@ def init_db():
             status TEXT
         )
     """)
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS users (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            email TEXT UNIQUE NOT NULL,
+            hashed_password TEXT NOT NULL,
+            created_at TEXT NOT NULL
+        )
+    """)
     conn.commit()
     conn.close()
 
+
+def create_user(email, password):
+    conn = sqlite3.connect("jobs.db")
+    cursor = conn.cursor()
+
+    hashed_password = pwd_context.hash(password)
+    created_at = datetime.now().isoformat()
+
+    try:
+        cursor.execute("""
+            INSERT INTO users (email, hashed_password, created_at)
+            VALUES (?, ?, ?)
+        """, (email, hashed_password, created_at))
+        conn.commit()
+        success = True
+    except sqlite3.IntegrityError:
+        # this happens if the email already exists (UNIQUE constraint)
+        success = False
+
+    conn.close()
+    return success
+
+def get_user_by_email(email):
+    conn = sqlite3.connect("jobs.db")
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        SELECT id, email, hashed_password FROM users WHERE email = ?
+    """, (email,))
+    row = cursor.fetchone()
+
+    conn.close()
+
+    if row is None:
+        return None
+
+    return {
+        "id": row[0],
+        "email": row[1],
+        "hashed_password": row[2]
+    }
 
 def save_jobs(tracked_jobs):
     conn = sqlite3.connect("jobs.db")
